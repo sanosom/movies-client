@@ -1,25 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { Component } from 'react'
+import { 
+    BrowserRouter as Router,
+    Switch,
+    Route,
+ } from 'react-router-dom'
+
+import Menu from './components/Menu'
+
+import Home from './pages/Home'
+import Movies from './pages/Movies'
+import Dummy from './pages/Dummy'
+
+import TokenContext from './contexts/User'
+
+class App extends Component {
+    constructor(props) {
+        super(props)
+
+        this.login = (token) => {
+            this.setState({
+                logged: true,
+            }, () => {
+                window.localStorage.setItem('logged', true)
+            })
+        }
+
+        this.logout = () => {
+            this.setState({
+                logged: false
+            }, () => {
+                window.localStorage.removeItem('logged')
+            })
+        }
+
+        this.state = {
+            logged: window.localStorage.getItem('logged') || false,
+            login: this.login,
+            logout: this.logout
+        }
+    }
+
+    render() {
+        return (
+            <Router>
+                <TokenContext.Provider value={this.state}>
+                    <Menu />
+                    <div className="container">
+                        <Switch>
+                            <Route path="/movies">
+                                <Movies />
+                            </Route>
+                            <Route path="/dummy">
+                                <Dummy />
+                            </Route>
+                            <Route path="/">
+                                <Home />
+                            </Route>
+                        </Switch>
+                    </div>
+                </TokenContext.Provider>
+            </Router>
+        )
+    }
 }
 
-export default App;
+export default App
