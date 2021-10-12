@@ -17,3 +17,7 @@ And finally run this project with:
 ```
 npm run start
 ```
+
+# Video
+
+https://user-images.githubusercontent.com/1503510/136895222-3a6e20c4-b943-4937-9261-b4e2b886a9fe.mp4
